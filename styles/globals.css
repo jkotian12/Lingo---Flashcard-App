@@ -24,8 +24,18 @@ body {
   align-items: center;
 }
 
-.card {
+.card.new {
   background-color: #9ba1d1;
+}
+
+.card.easy {
+  background-color: rgb(21, 240, 21);
+}
+.card.medium {
+  background-color: salmon;
+}
+.card.hard {
+  background-color: red;
 }
 
 .inactive {

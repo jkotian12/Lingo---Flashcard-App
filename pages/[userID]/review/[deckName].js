@@ -1,21 +1,25 @@
 import { React, useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
-import Card from "../components";
-import cardContext from "../store/cardContext";
+import Card from "../../../components/Card";
+import cardContext from "../../../store/cardContext";
 const axios = require("axios");
 
-export default function Decklist() {
+export default function Decklist(props) {
+  const router = useRouter();
+
   //State for data fetched from db
   //This state is also changed to send to db after review
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(
+    props.cards.sort(() => (Math.random() > 0.5 ? 1 : -1))
+  );
 
   //State to check if initial render
   const [isInitial, setIsInitial] = useState(true);
 
   //State for array element to be displayed from the "data" state
-  const [position, setPosition] = useState(data.length);
+  const [position, setPosition] = useState(0);
 
-  //Variables to check if review is done
+  //Variable to check if review is done
   let isDeckDone = position < data.length;
 
   //function to change the array element to be displayed after user reads card
@@ -56,31 +60,14 @@ export default function Decklist() {
         });
     };
     postData();
-  }, [isDeckDone]);
-
-  //useEffect for fetching data from db
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get("/api/cards")
-        .then((res) => {
-          if (res.data) {
-            setData(res.data.sort(() => (Math.random() > 0.5 ? 1 : -1)));
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchData();
-  }, []);
+  }, [isDeckDone, isInitial]);
 
   return (
     <cardContext.Provider
       value={{ cardData: data, setDifficulty: difficultyHandler }}
     >
       {data.length ? (
-        isDeckDone && isReviewDone ? (
+        isDeckDone ? (
           <>
             <Card
               index={position}
@@ -96,4 +83,12 @@ export default function Decklist() {
       )}
     </cardContext.Provider>
   );
+}
+
+export async function getServerSideProps(context) {
+  const data = await axios.post(`http://localhost:3000/api/cards`, {
+    type: "fetch",
+    deck_set: context.params.deckName,
+  });
+  return { props: { cards: data.data } };
 }
