@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-export default function Login() {
+export default function Login(props) {
   const router = useRouter();
   const [info, setInfo] = useState({ username: "", password: "" });
 

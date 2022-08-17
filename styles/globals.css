@@ -1,5 +1,5 @@
 body {
-  background-color: #bae2dd;
+  background-color: #86e7dc;
   color: white;
   display: flex;
   justify-content: center;
@@ -42,7 +42,7 @@ body {
   display: none;
 }
 
-@media screen and (max-width: 640px) {
+/* @media screen and (max-width: 640px) {
   body {
     background-color: red;
   }
@@ -52,4 +52,4 @@ body {
   body {
     background-color: green;
   }
-}
+} */

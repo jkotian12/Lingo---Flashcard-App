@@ -17,7 +17,6 @@ export default function Index(props) {
       .then((res) => {
         if (res.data == "ok") {
           axios.post("/api/decks", { id }).then((response) => {
-            console.log(response);
             setDecks(response.data);
           });
         } else if (res.data == "err") {
@@ -32,7 +31,9 @@ export default function Index(props) {
     <>
       <div>
         {decks.map((deck, index) => {
-          return <Deck key={index} name={deck.deck_name} />;
+          return (
+            <Deck key={index} name={deck.deck_name} native_name={deck.native} />
+          );
         })}
       </div>
       <form onSubmit={submitHandler}>
@@ -53,6 +54,5 @@ export async function getServerSideProps(context) {
   const data = await axios.post(`http://localhost:3000/api/decks`, {
     id: context.params.userID,
   });
-
   return { props: { decks: data.data } };
 }

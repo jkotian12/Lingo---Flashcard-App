@@ -6,7 +6,9 @@ export default function Deck(props) {
 
   return (
     <>
-      <p>{props.name}</p>
+      <p>
+        {props.name}/{props.native_name}
+      </p>
       <button
         onClick={() => {
           router.push(`/${router.query.userID}/${props.name}`);
